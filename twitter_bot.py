@@ -69,7 +69,8 @@ def findtweets():
 def unfollow():
 	print(" ~ Starting unfollow process ~ ")
 	for user in followed:
-		if (api.exists_friendship(screen_name=handle, id=user) == "false"):
+		status = api.show_friendship(source_screen_name=handle, target_id=user)
+		if (str(status[1].following) == "False"):
 			api.destroy_friendship(id=user)
 			print("Unfollowed: " + user)
 			followed.remove(user)
