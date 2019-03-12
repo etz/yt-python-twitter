@@ -25,6 +25,7 @@ consumer_secret = ''
 access_token = ''
 access_token_secret = ''
 handle = ''
+delay_between_search = 30
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -78,7 +79,15 @@ def unfollow():
 		print("Friended: " + user)
 		followed.remove(user)
 		
-
+#Unfollow_friends: Unfollows users that DO follow you back. See while loop for details.
+def unfollow_friends():
+    print(" ~ Starting unfollow_friends process ~ ")
+    for user in friends:
+        api.destroy_friendship(id=user)
+        print("Unfollowed: " + user)
+        friends.remove(user)		
+		
+		
 # 6. Unfollow users that don't follow back after 1 hour
 def unlike():
 	for tweet in liked:
@@ -105,12 +114,15 @@ if (first_run == 0):
 
 while (1 > 0):
 	#Tweet Process
-	if (time.time() > time_start+3600):
-		unfollow()
 	if (time.time() > time_start+(3600*3)):
+		time_start = time.time()
+		unfollow_friends()
+	if (time.time() > time_start+3600 and len(followed) > 100):
+		unfollow()
 		unlike()
+		
 	findtweets()
-	
+	time.sleep(delay_between_search)
 	#Logging
 	print("Logging our files...")
 	liked_tweets = open("liked_tweets.txt", "w")
