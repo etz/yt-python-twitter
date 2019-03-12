@@ -1,3 +1,11 @@
+#Installing: 
+# 1. Add your own consumer key and access key data from Twitter Apps (https://developer.twitter.com/en/apps)
+# 2. Add your own @handle in the handle variable. 
+# 3. Change the search terms found in the twitter_bot.py file under "terms = []" in the findtweets() method
+# 4. Install the Tweepy python module
+# 5. Run twitter_bot.py
+# YouTube Playlist: https://www.youtube.com/playlist?list=PLiaqnw9VgH2-C8-FStD6sf-YBKyWhPAHs
+
 #!/usr/bin/python
 
 import tweepy
