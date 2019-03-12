@@ -92,12 +92,15 @@ def write_to_file(filename, list):
 
 # 9. Read from our files on first run.
 if (first_run == 0):
-	with open('followed_users.txt') as f:
-		followed = f.read().splitlines()
-	with open('liked_tweets.txt') as f:
-		liked = f.read().splitlines()	
-	with open('friend_users.txt') as f:
-		friends = f.read().splitlines()	
+	try:
+		with open('followed_users.txt') as f:
+			followed = f.read().splitlines()
+		with open('liked_tweets.txt') as f:
+			liked = f.read().splitlines()	
+		with open('friend_users.txt') as f:
+			friends = f.read().splitlines()	
+	except:
+		print("Files not found...waiting for first run.")
 	first_run = 1
 
 while (1 > 0):
