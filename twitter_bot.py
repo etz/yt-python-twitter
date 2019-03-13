@@ -34,7 +34,7 @@ api = tweepy.API(auth)
 
 def findtweets():
 	# Find 'new' tweets (under hashtags/search terms)
-	terms = ["twitch","youtube","follow"]
+	terms = ["twitch","youtube","follow","lmao", "lol", "h3h3productions", "h3h3", "keemstar", "tanamongeau"]
 	query = random.choice(terms)
 	search = tweepy.Cursor(api.search, q=query, result_type="recent", lang="en").items(50) #Change the amount of tweets being searched for 50-75
 	print("Searching under term..." + query)
@@ -117,7 +117,7 @@ def write_to_file(filename, list):
 	for item in list:
 		filename.write(str(item) + "\n")
 
-# 9. Read from our files on first run.
+# Read from our files on first run.
 if (first_run == 0):
 	try:
 		with open('followed_users.txt') as f:
@@ -139,17 +139,15 @@ if (first_run == 0):
 while (1 > 0):
 	since_launch = int(time.time() - time_start)
 
-	print ("Running Twitter Bot... " + str(since_launch) + " seconds since launch")
+	print ("Running Twitter Bot... " + str(since_launch/60) + " minutes since last mass-action..")
 
-	# Tweeting 
+	# Tweeting
 	if (time.time() > time_start+(3600*3)):
 		time_start = time.time()
 		unfollow_friends()
 	if (time.time() > time_start+3600 and len(followed) > 100):
 		unfollow()
 		unlike()
-	if (time.time() > time_start+180):
-		print(str(since_launch/60) + " minutes since launch, running additional commands in " + str(60-(since_launch/60)) + " minutes")
 
 	findtweets()
 	time.sleep(delay_between_search)
