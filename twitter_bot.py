@@ -32,11 +32,12 @@ auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth)
 
+
 def findtweets():
 	# Find 'new' tweets (under hashtags/search terms)
-	terms = ["twitch","youtube","follow","lmao", "lol", "h3h3productions", "h3h3", "keemstar", "tanamongeau"]
+	terms = ["twitch","youtube","follow"]
 	query = random.choice(terms)
-	search = tweepy.Cursor(api.search, q=query, result_type="recent", lang="en").items(50) #Change the amount of tweets being searched for 50-75
+	search = tweepy.Cursor(api.search, q=query, result_type="recent", lang="en").items(35) #Change the amount of tweets being searched for 50-75
 	print("Searching under term..." + query)
 	# Like 'new' tweets (only if the user has more than 100 followers & less than 2500 tweets)
 	for tweet in search:
@@ -71,12 +72,17 @@ def findtweets():
 def unfollow():
 	print(" ~ Starting unfollow process ~ ")
 	for user in followed:
-		status = api.show_friendship(source_screen_name=handle, target_id=user)
+		try:
+			status = api.show_friendship(source_screen_name=handle, target_id=user)
+		except:
+			print ("Rate Limit Exceeded")
+			time.sleep(900)
 		# If the user is not following me back:
 		if (str(status[1].following) == "False"):
 			try:
 				# Unfollow them
 				api.destroy_friendship(id=user)
+				time.sleep(10)
 				print("Unfollowed: " + str(user))
 				followed.remove(user)
 				continue
